@@ -1,0 +1,20 @@
+<%= simple_form_for @list do |f| %>
+  <div class="mb-3">
+    <%= f.error_notification class: "alert alert-danger" %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence, class: "alert alert-danger" if f.object.errors[:base].present? %>
+  </div>
+
+  <div class="form-inputs">
+    <div class="mb-3">
+      <%= f.input :name, label: "List Name", input_html: { class: "form-control", placeholder: "Enter the list name" } %>
+    </div>
+  </div>
+
+  <div class="form-actions mb-3">
+    <%= f.button :submit, class: "btn btn-success" do %>
+      <i class="fas fa-check-circle"></i> Submit
+    <% end %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Lists", lists_path, class: "btn btn-primary" %>
