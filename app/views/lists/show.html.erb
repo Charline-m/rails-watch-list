@@ -4,6 +4,10 @@
     <% @list.movies.each do |movie| %>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <%= movie.title %>
+        
+        <% bookmark = Bookmark.find_by(movie: movie, list: @list) %>
+        <p><%= bookmark.comment %></p>
+        <%= link_to "delete the bookmark", bookmark_path(bookmark), class: "btn btn-primary mt-3", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
       </li>
     <% end %>
   </ul>
