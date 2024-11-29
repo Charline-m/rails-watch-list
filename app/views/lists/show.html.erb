@@ -1,17 +1,73 @@
-<h1><%= @list.name %></h1>
 
-<ul class="list-group">
+  <title><%= @list.name %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212; /* Fond noir */
+      color: white; /* Texte blanc */
+    }
+    .card {
+      background-color: #1e1e1e; /* Cartes avec fond gris foncé */
+      border: none;
+    }
+    .card-title, .card-text {
+      color: white;  /* Texte des cartes en blanc */
+    }
+    .btn {
+      color: white; /* Texte des boutons en blanc */
+    }
+    .btn-primary {
+      background-color: #007bff;  /* Bleu clair pour les boutons */
+      border-color: #007bff;
+    }
+    .btn-danger {
+      background-color: #dc3545;  /* Rouge pour les boutons de suppression */
+      border-color: #dc3545;
+    }
+    .btn-secondary {
+      background-color: #6c757d;  /* Gris pour le bouton "Return to lists" */
+      border-color: #6c757d;
+    }
+    .container {
+      text-align: center; /* Centrer tous les éléments dans la container */
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-4">
+  <h1 class="text-center text-white mb-4"><%= @list.name %></h1>
+
+  <div class="mb-4">
+    <%= link_to "Add a new movie and comment", new_list_bookmark_path(@list), class: "btn btn-primary me-2" %>
+    <%= link_to "Delete the list", list_path(@list), class: "btn btn-danger me-2", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+    <%= link_to "Return to lists", lists_path, class: "btn btn-secondary" %>
+  </div>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     <% @list.movies.each do |movie| %>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <%= movie.title %>
-        
-        <% bookmark = Bookmark.find_by(movie: movie, list: @list) %>
-        <p><%= bookmark.comment %></p>
-        <%= link_to "delete the bookmark", bookmark_path(bookmark), class: "btn btn-primary mt-3", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
-      </li>
+      <% bookmark = Bookmark.find_by(movie: movie, list: @list) %>
+      <div class="col">
+        <div class="card shadow-sm h-100">
+          <%= image_tag movie.poster_url, class: "card-img-top", alt: movie.title %>
+          <div class="card-body">
+            <h5 class="card-title"><%= movie.title %></h5>
+            <p class="card-text"><%= bookmark.comment %></p>
+            <div>
+              <%= link_to "Delete Bookmark", bookmark_path(bookmark), class: "btn btn-danger btn-sm", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+            </div>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
+</div>
 
-<%= link_to "Add a new movie and comment", new_list_bookmark_path(@list), class: "btn btn-primary mt-3" %>
-<%= link_to "delete the list", list_path(@list), class: "btn btn-primary mt-3", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
-<%= link_to "Return to lists", lists_path, class: "btn btn-primary mt-3" %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
